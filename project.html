@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luxury Bouquets & Flower Boxes</title>
+<style>
+:root {
+    --primary: #a39196;
+    --secondary: #9b868b;
+    --bg-color: #ffd1dc;
+    --text-color: #333;
+    --card-bg: #ffffff;
+}
+body.dark { --bg-color: #b1124d; --text-color: #fff; --card-bg: #ffe3ed; }
+* { box-sizing: border-box; }
+body { margin:0; font-family:Arial,sans-serif; background: var(--bg-color); color: var(--text-color); transition:0.3s; }
+nav { background: var(--card-bg); padding:15px 40px; display:flex; justify-content:space-between; align-items:center; }
+.toggle-btn { background: var(--primary); color:white; border:none; padding:8px 14px; border-radius:20px; cursor:pointer; }
+header { background: linear-gradient(120deg,var(--primary),var(--secondary)); color:white; padding:70px 20px; text-align:center; }
+section { max-width:1100px; margin:40px auto; padding:20px; }
+.products { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; }
+.card { background: var(--card-bg); border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,.15); overflow:hidden; cursor:pointer; transition: transform .3s; }
+.card:hover { transform: translateY(-8px); }
+.card img { width:100%; height:280px; object-fit:cover; }
+.card .content { padding:20px; }
+.price { color: var(--primary); font-weight:bold; }
+.order { display:grid; grid-template-columns:2fr 1fr; gap:30px; }
+.summary { background: var(--card-bg); padding:20px; border-radius:15px; box-shadow:0 10px 25px rgba(0,0,0,.15); }
+.summary ul { padding-left:0; list-style:none; display:flex; flex-direction: column; gap:10px; }
+.customize {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+.customize label {
+    display: block;
+    margin: 15px 0 8px;
+    font-weight: bold;
+    color: var(--primary);
+    font-size: 1.1em;
+}
+.customize .pill {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+    user-select: none;
+    position: relative;
+}
+.customize .pill.selected {
+    box-shadow: 0 0 20px rgba(255,79,154,0.6);
+    transform: scale(1.05);
+}
+.customize .pill:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 30px rgba(160, 122, 138, 0.9);
+}
+.customize select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 15px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.2s;
+    margin-bottom: 15px;
+}
+.customize select:hover { transform: scale(1.03); }
+
+/* Luxury Cart Buttons */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.cart-item:hover { transform: scale(1.03); box-shadow: 0 0 15px rgba(255,79,154,0.6); }
+.cart-item span { flex:1; }
+.cart-item input {
+    width: 50px;
+    border-radius: 10px;
+    border:none;
+    text-align:center;
+    font-weight:bold;
+    margin:0 10px;
+}
+.cart-item button {
+    background:#fff;
+    color:var(--primary);
+    padding:5px 12px;
+    border-radius:20px;
+    border:none;
+    font-weight:bold;
+    cursor:pointer;
+    transition: 0.2s;
+}
+.cart-item button:hover { background:#ff4f9a; color:#fff; }
+
+button.checkout-btn, button.share-btn {
+    width:100%;
+    padding: 12px;
+    border:none;
+    border-radius:50px;
+    background: linear-gradient(135deg,var(--primary),var(--secondary));
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    font-size:1.1em;
+    margin-top:10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+button.checkout-btn:hover, button.share-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(255,79,154,0.6); }
+
+@media(max-width:800px){ .order { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<nav>
+    <strong>🌹 Flower Studio</strong>
+    <button class="toggle-btn" onclick="toggleTheme()">🌸 Theme</button>
+</nav>
+
+<header>
+    <h1>Luxury Handmade Bouquets</h1>
+    <p>Tap a bouquet to add it to your order</p>
+</header>
+
+<!-- Products -->
+<section>
+<h2>Featured Creations</h2>
+<div class="products">
+    <div class="card" onclick="addItem('Classic Red Roses', 45)">
+        <img src="rose.jpeg" alt="Red Roses">
+        <div class="content">
+            <h3>Classic Red Roses</h3>
+            <p>12 premium roses</p>
+            <p class="price">$45</p>
+        </div>
+    </div>
+    <div class="card" onclick="addItem('Elegant Flower Box', 30)">
+        <img src="pink flower.jpeg" alt="Pink Flowers">
+        <div class="content">
+            <h3>Elegant Flower Box</h3>
+            <p>Seasonal flowers</p>
+            <p class="price">$30</p>
+        </div>
+    </div>
+</div>
+</section>
+
+<section>
+<h2>Spring Collection</h2>
+<div class="products">
+    <div class="card" onclick="addItem('Tulip Delight', 35)">
+        <img src="WhatsApp Image 2026-01-11 at 6.36.54 AM.jpeg" alt="Tulips">
+        <div class="content">
+            <h3>Tulip Delight</h3>
+            <p>Fresh tulip bouquet</p>
+            <p class="price">$35</p>
+        </div>
+    </div>
+    <div class="card" onclick="addItem('Peony Charm', 40)">
+        <img src="WhatsApp Image 2026-01-11 at 6.36.54 AM (1).jpeg" alt="Peonies">
+        <div class="content">
+            <h3>Peony Charm</h3>
+            <p>Elegant seasonal peonies</p>
+            <p class="price">$40</p>
+        </div>
+    </div>
+</div>
+</section>
+
+<section>
+<h2>Summer Collection</h2>
+<div class="products">
+    <div class="card" onclick="addItem('Sunflower Bliss', 25)">
+        <img src="WhatsApp Image 2026-01-11 at 6.36.53 AM (1).jpeg" alt="Sunflowers">
+        <div class="content">
+            <h3>Sunflower Bliss</h3>
+            <p>Bright summer sunflowers</p>
+            <p class="price">$25</p>
+        </div>
+    </div>
+    <div class="card" onclick="addItem('Lavender Dreams', 28)">
+        <img src="WhatsApp Image 2026-01-11 at 6.37.10 AM.jpeg" alt="Lavender">
+        <div class="content">
+            <h3>Lavender Dreams</h3>
+            <p>Fragrant lavender bouquet</p>
+            <p class="price">$28</p>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Order & Customization -->
+<section class="order">
+<div class="customize">
+    <h2>Advanced Customization</h2>
+    <label>Extras</label>
+    <div class="pill" data-type="extra" data-value="5" onclick="togglePill(this)">Ribbons (+$5)</div>
+    <div class="pill" data-type="extra" data-value="8" onclick="togglePill(this)">Chocolates (+$8)</div>
+
+    <label>Box Style</label>
+    <div class="pill" data-type="box" data-value="0" onclick="selectSingle(this)">Standard Wrap</div>
+    <div class="pill" data-type="box" data-value="10" onclick="selectSingle(this)">Luxury Box (+$10)</div>
+
+    <label>Delivery Option</label>
+    <div class="pill" data-type="delivery" data-value="0" onclick="selectSingle(this)">Standard Delivery</div>
+    <div class="pill" data-type="delivery" data-value="15" onclick="selectSingle(this)">Same-Day Delivery (+$15)</div>
+</div>
+
+<div class="summary">
+    <h3>Order Summary</h3>
+    <ul id="items"></ul>
+    <h2 id="total">$0</h2>
+    <button class="checkout-btn" onclick="checkoutWhatsApp()">Checkout via WhatsApp</button>
+    <button class="share-btn" onclick="shareCart()">Generate Shareable Link</button>
+</div>
+</section>
+
+<script>
+let cart = [];
+let selections = {extra:[], box:null, delivery:null};
+
+// Theme toggle
+function toggleTheme() { document.body.classList.toggle("dark"); }
+
+// Cart operations
+function addItem(name, price) {
+    const e = cart.find(i=>i.name===name);
+    if(e) e.qty++; else cart.push({name, price, qty:1});
+    renderCart();
+}
+function removeItem(name) { cart = cart.filter(i=>i.name!==name); renderCart(); }
+function updateQty(name, qty) { const item = cart.find(i=>i.name===name); if(item){ item.qty = qty; if(qty<=0) removeItem(name); } renderCart(); }
+function renderCart() {
+    const itemsList=document.getElementById("items");
+    itemsList.innerHTML='';
+    let total=0;
+    cart.forEach(i=>{
+        const li=document.createElement("li");
+        li.className="cart-item";
+        li.innerHTML=`<span>${i.name} - $${i.price}</span>
+                      <input type="number" min="1" value="${i.qty}" onchange="updateQty('${i.name}',this.value)">
+                      <button onclick="removeItem('${i.name}')">Remove</button>`;
+        itemsList.appendChild(li);
+        total+=i.price*i.qty;
+    });
+    const extras = selections.extra.reduce((sum,v)=>sum+parseInt(v),0);
+    const box = selections.box ? parseInt(selections.box) : 0;
+    const delivery = selections.delivery ? parseInt(selections.delivery) : 0;
+    document.getElementById("total").innerText=`$${total+extras+box+delivery}`;
+}
+
+// Pills
+function togglePill(el){
+    const type=el.dataset.type, value=el.dataset.value;
+    if(selections[type].includes(value)){ selections[type]=selections[type].filter(v=>v!==value); el.classList.remove('selected'); }
+    else { selections[type].push(value); el.classList.add('selected'); }
+    renderCart();
+}
+function selectSingle(el){
+    const type=el.dataset.type;
+    document.querySelectorAll(`.pill[data-type='${type}']`).forEach(p=>p.classList.remove('selected'));
+    el.classList.add('selected');
+    selections[type]=el.dataset.value;
+    renderCart();
+}
+
+// WhatsApp Checkout
+function checkoutWhatsApp(){
+    if(cart.length===0){ alert("Cart is empty!"); return; }
+    let msg="Hello! I want to order:\n";
+    cart.forEach(i=>msg+=`${i.name} x${i.qty} - $${i.price*i.qty}\n`);
+    msg+=`Extras: ${selections.extra.length?selections.extra.map(v=>v=="5"?"Ribbons":"Chocolates").join(", "):'None'}\n`;
+    msg+=`Box: ${selections.box==10?"Luxury Box":"Standard Wrap"}\n`;
+    msg+=`Delivery: ${selections.delivery==15?"Same-Day Delivery":"Standard Delivery"}\n`;
+    msg+=`Total: ${document.getElementById("total").innerText}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`,'_blank');
+}
+
+// --- Shareable Link ---
+function encodeOrder(){
+    const cartStr = cart.map(i=>`${i.name.replaceAll(' ','_')}|${i.price}|${i.qty}`).join(',');
+    const extrasStr = selections.extra.join('-');
+    const boxStr = selections.box||0;
+    const deliveryStr = selections.delivery||0;
+    return btoa(`${cartStr};${extrasStr};${boxStr};${deliveryStr}`);
+}
+function decodeOrder(str){
+    try{
+        const decoded=atob(str);
+        const [cartStr, extrasStr, boxStr, deliveryStr] = decoded.split(';');
+        cart = cartStr ? cartStr.split(',').map(s=>{ const [name, price, qty] = s.split('|'); return {name:name.replaceAll('_',' '), price:parseFloat(price), qty:parseInt(qty)} }) : [];
+        selections = { extra: extrasStr?extrasStr.split('-').filter(v=>v):[], box:boxStr?boxStr:null, delivery:deliveryStr?deliveryStr:null };
+        document.querySelectorAll(".pill").forEach(p=>{
+            const type=p.dataset.type, value=p.dataset.value;
+            if(type==="extra" && selections.extra.includes(value)) p.classList.add('selected');
+            if((type==="box"||type==="delivery") && selections[type]==value) p.classList.add('selected');
+        });
+    } catch(e){ console.error('Invalid order string'); }
+}
+function shareCart(){
+    const code = encodeOrder();
+    const url = `${window.location.origin}${window.location.pathname}?o=${code}`;
+    prompt("Share this link with anyone:", url);
+}
+
+// Load cart from URL
+const urlParams=new URLSearchParams(window.location.search);
+if(urlParams.has("o")) decodeOrder(urlParams.get("o"));
+renderCart();
+</script>
+</body>
+</html>
